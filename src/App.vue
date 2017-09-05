@@ -7,16 +7,19 @@
     <div v-else>
       <div class="container">
         <DurationSelection v-on:durationChanged="durationChanged"></DurationSelection>
-        <Newslist v-bind:duration="duration" v-bind:articles="articles"></Newslist>
-        <div v-if="articles">
-          <p v-for="article in articles">{{article}}</p>
+        <div v-if="duration">
+          <Newslist v-bind:duration="duration" v-bind:articles="articles"></Newslist>
         </div>
+        <!--<div v-if="articles">
+          <p v-for="article in articles">{{article.title}}</p>
+        </div>-->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import NavigationBar from './components/NavigationBar'
 import Newslist from './components/Newslist'
 import DurationSelection from './components/DurationSelection'
@@ -38,12 +41,13 @@ export default {
                 "espn", "financial-times", "fortune", "fox-sports", "google-news",
                 "hacker-news", "ign", "independent", "mashable", "metro", "mirror",
                 "mtv-news", "national-geographic", "new-scientist", "newsweek",
-                "new-york-magazine", "nfl-news", "polygon", "recode", "reddit-r-all",
+                "new-york-magazine", "nfl-news", "polygon", "recode",
                 "reuters", "techcrunch", "techradar", "the-economist", "the-hindu",
                 "the-huffington-post", "the-lad-bible", "the-new-york-times",
                 "the-next-web", "the-sport-bible", "the-telegraph", "the-verge",
                 "the-wall-street-journal", "the-washington-post", "time",
                 "usa-today"],
+      urls: [],
       articles: [],
       articleCounter: 0
     }
@@ -52,30 +56,84 @@ export default {
     durationChanged: function (duration) {
       this.duration = duration;
     },
-    getArticles: function () {
-      var cnt = 0;
-      for (var i=0; i<this.sources.length; i++) {
-        this.$http.get('https://newsapi.org/v1/articles?source=' + this.sources[i] + '&apiKey=da7f4e792b194c64a762f0cb214bc3f4').then(response => {
-          for (var j=0; j<10; j++) {
-            this.articles.push(response.data.articles[j].url);
-            console.log(this.articles);
-            cnt++;
-            if (cnt > 450) {
-              //this.loading = false;
+    getSourceUrls: function (source) {
+      const vm = this;
+      var urls = [];
+      axios.get('https://newsapi.org/v1/articles?source=' + source + '&apiKey=da7f4e792b194c64a762f0cb214bc3f4')
+        .then(function (response) {
+          //console.log(response);
+          for (var i=0; i<10; i++) {
+            //console.log(response.data.articles[i].url);
+            if (response.data.articles[i] != null) {
+              var url = response.data.articles[i].url;
+              //console.log(url);
+              vm.urls.push(url);
+              //console.log(vm.urls);
             }
           }
+          return urls;
+        })
+        .catch(function (error) {
+          console.log(error);
         });
+    },
+    getUrls: function (sources) {
+      var num_sources = sources.length;
+      for (var i=0; i<num_sources; i++) {
+        this.getSourceUrls(sources[i]);
       }
+    },
+    getArticle: function (url) {
+      var instance = axios.create({
+        baseURL: 'https://mercury.postlight.com',
+        headers: {'Content-Type': 'application/json', 'x-api-key': 'hBYuD6O5r55D770EVSlmy2dgHH4pH4CYfZAmvGJz'}
+      });
+      instance.get('/parser?url=' + url)
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    stopLoading: function () {
+      this.loading = false;
     }
   },
   created: function () {
-    this.getArticles();
+    var newsapi_base = 'https://newsapi.org/v1';
+    var newsapi_key = 'da7f4e792b194c64a762f0cb214bc3f4';
+    var num_sources = this.sources.length;
+    const vm = this;
+    for (var i=0; i<num_sources; i++) {
+      axios.get(newsapi_base + '/articles?source=' + vm.sources[i] + '&apiKey=' + newsapi_key)
+        .then((response) => {
+          var instance = axios.create({
+            baseURL: 'https://mercury.postlight.com',
+            headers: {'Content-Type': 'application/json', 'x-api-key': 'hBYuD6O5r55D770EVSlmy2dgHH4pH4CYfZAmvGJz'}
+          });
+          //var curr_articles = [];
+          var num_articles = response.data.articles.length;
+          for (var j=0; j<num_articles; j++) {
+            instance.get('/parser?url=' + response.data.articles[j].url)
+              .then(function (response) {
+                vm.articles.push(response.data);
+                ++vm.articleCounter;
+                if (vm.articleCounter > 400) {
+                  /*setTimeout(vm.stopLoading(), 4000);*/
+                  vm.loading = false;
+                }
+              })
+          }
+      });
+    }
+
   }
 }
 </script>
 
 <style>
-body, html{
+body, html {
 font-family: "Palanquin";
 font-weight: normal;
 font-style: normal;
@@ -87,7 +145,7 @@ font-weight: 900;
 font-style: normal;
 }
 
-h2, h3, h4{
+h2, h3, h4 {
 font-family: "Kadwa";
 font-weight: normal;
 font-style: normal;

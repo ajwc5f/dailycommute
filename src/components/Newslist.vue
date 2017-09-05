@@ -1,25 +1,34 @@
 <template>
   <div class="newslist">
-    <div class="container">
+    <!--<div class="container">-->
 
-      <!--<ul class="media-list">
-        <li class="media" v-for="article in articles">
-          <a v-bind:href="article.url" target="_blank">
-            <img class="media-object" v-bind:src="article.urlToImage">
-          </a>
+      <ul class="list-unstyled">
+        <li class="media" v-for="article in articles" v-if="article.word_count < duration">
+          <!--<p class="d-flex align-self-end mr-3">{{article.word_count/200}} min read</p>-->
           <div class="media-body">
-            <h4 class="media-heading"><a v-bind:href="article.url" target="_blank">{{article.title}}</a></h4>
-            <h5><i>by {{article.author}}</i></h5>
-            <p>{{article.description}}</p>
+            <!--<img class="lead-image" v-bind:src="article.lead_image_url">-->
+            <h5 class="mt-0"><a v-bind:href="article.url" target="_blank" class="text-black">{{article.title}}</a></h5>
+            <h6 v-if="article.author" class="text-muted">by {{article.author}} <a v-bind:href="article.url" target="_blank" class="text-muted">({{article.domain}})</a></h6>
+            <h6 class="text-muted" v-else>by <a v-bind:href="article.url" target="_blank" class="text-muted">{{article.domain}}</a></h6>
+            <!--<p>{{article.excerpt}}</p>-->
+          </div>
+          <div class="d-block align-self-center ml-1">
+            <a v-bind:href="article.url" target="_blank">
+              <button type="button" class="btn btn-outline-danger read-time">Read</br>{{Math.round(article.word_count/200)}} min</button>
+            </a>
+              <button type="button" class="btn btn-outline-warning read-time">Pocket</br><i class="fa fa-chevron-down" aria-hidden="true"></i>
+</button>
           </div>
         </li>
-      </ul>-->
+      </ul>
 
-    </div>
+    <!--</div>-->
   </div>
 </template>
 
 <script>
+import shuffle from 'shuffle-array';
+
 export default {
   name: 'newslist',
   props: ['duration', 'articles'],
@@ -30,15 +39,25 @@ export default {
     }
   },
   methods: {
-    updateSource: function (duration) {
+    updateList: function (duration) {
+      shuffle(this.articles);
     }
+    /*underDuration: function (article) {
+      if (article.word_count >= this.duration) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    */
   },
   created: function () {
-    this.updateSource(this.duration);
+    this.updateList(this.duration);
   },
   watch: {
     duration: function (val) {
-      this.updateSource(val);
+      this.updateList(val);
     }
   }
 }
@@ -46,10 +65,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .media-object {
-    width: 128px;
-    padding: 10px;
-    padding-top: 0px;
+  .lead-image {
+    width: 100%;
+    height: 200px;
+    padding-bottom: 10px;
+  }
+  .read-time {
+    width: 70px;
+    height: 70px;
+    padding: 5px;
+    margin: 0px 5px 20px 5px;
   }
   .media {
     border-top: 1px solid lightgray;
@@ -57,5 +82,9 @@ export default {
   }
   .media-list {
     padding: 0px;
+  }
+
+  .text-black {
+    color: black;
   }
 </style>

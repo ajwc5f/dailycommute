@@ -13,7 +13,7 @@
           <option v-for="duration in durations" v-bind:value="duration.words">{{duration.text}}</option>
         </select>
         <div v-if="duration">
-          <h6>{{duration.response}}</h6>
+          <!--<h6>{{duration.response}}</h6>-->
         </div>
       </div>
     </div>
@@ -27,27 +27,37 @@ export default {
     return {
       durations: [
         {
-          text: "Less than 10 minutes",
+          text: "Less than 5 minutes",
+          words: "1000",
+          response: "I wish I had your commute! It is way shorter the national average!"
+        },
+        {
+          text: "5 to 10 minutes",
           words: "2000",
           response: "I wish I had your commute! It is way shorter the national average!"
         },
         {
-          text: "10 to 20 minutes",
+          text: "10 to 15 minutes",
+          words: "3000",
+          response: "That's not too long! It's shoter than the national average!"
+        },
+        {
+          text: "15 to 20 minutes",
           words: "4000",
           response: "That's not too long! It's shoter than the national average!"
         },
         {
-          text: "20 to 30 minutes",
+          text: "20 to 25 minutes",
+          words: "5000",
+          response: "You've got the national average commute time!"
+        },
+        {
+          text: "25 to 30 minutes",
           words: "6000",
           response: "You've got the national average commute time!"
         },
         {
-          text: "30 to 40 minutes",
-          words: "8000",
-          response: "Your commute is longer the national average! But it could be worse right? "
-        },
-        {
-          text: "More than 40 minutes",
+          text: "More than 30 minutes",
           words: "100000",
           response: "I hope you are comfy... Your commute time is over twice the national average!"
         }
