@@ -1,0 +1,10 @@
+{
+ "name": "thedailycommute",
+ "version": "1.0.0",
+ "description": "Giving daily article suggestions, tailored to the duration of your commute. ",
+ "author": "Aren Wells",
+ "private": false,
+ "scripts": {
+   "postinstall": "npm install express"
+ }
+}
