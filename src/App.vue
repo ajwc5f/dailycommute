@@ -1,18 +1,12 @@
 <template>
   <div id="app">
     <NavigationBar></NavigationBar>
-    <div v-if="loading">
-      <div id="preloader"><h1 class="flicker">Gathering today's articles...</h1></div>
-    </div>
-    <div v-else>
-      <div class="container">
-        <DurationSelection v-on:durationChanged="durationChanged"></DurationSelection>
-        <div v-if="duration">
-          <Newslist v-bind:duration="duration" v-bind:articles="articles"></Newslist>
-        </div>
-        <!--<div v-if="articles">
-          <p v-for="article in articles">{{article.title}}</p>
-        </div>-->
+    <div class="container">
+      <div v-if="loading">
+        <div id="preloader"><h1 class="flicker">Gathering today's articles...</h1></div>
+      </div>
+      <div v-else>
+        <router-view v-bind="articlesAsProps"></router-view>
       </div>
     </div>
   </div>
@@ -21,20 +15,15 @@
 <script>
 import axios from 'axios';
 import NavigationBar from './components/NavigationBar'
-import Newslist from './components/Newslist'
-import DurationSelection from './components/DurationSelection'
 
 export default {
   name: 'app',
   components: {
-    NavigationBar,
-    Newslist,
-    DurationSelection
+    NavigationBar
   },
   data () {
     return {
       loading: true,
-      duration: "",
       sources: ["ars-technica", "associated-press", "bbc-news", "bbc-sport",
                 "bloomberg", "breitbart-news", "business-insider", "buzzfeed",
                 "cnbc", "cnn", "daily-mail", "engadget", "entertainment-weekly",
@@ -53,9 +42,6 @@ export default {
     }
   },
   methods: {
-    durationChanged: function (duration) {
-      this.duration = duration;
-    },
     getSourceUrls: function (source) {
       const vm = this;
       var urls = [];
@@ -128,29 +114,38 @@ export default {
       });
     }
 
+  },
+  computed: {
+    articlesAsProps() {
+      if (this.$route.name === 'home') {
+        return { articles: this.articles }
+      }
+    }
   }
 }
 </script>
 
 <style>
+#app {
+}
 body, html {
-font-family: "Palanquin";
-font-weight: normal;
-font-style: normal;
+  font-family: "Palanquin";
+  font-weight: normal;
+  font-style: normal;
 }
-
 h1{
-font-family: "Merriweather";
-font-weight: 900;
-font-style: normal;
+  font-family: "Merriweather";
+  font-weight: 900;
+  font-style: normal;
 }
-
 h2, h3, h4 {
-font-family: "Kadwa";
-font-weight: normal;
-font-style: normal;
+  font-family: "Kadwa";
+  font-weight: normal;
+  font-style: normal;
 }
-
+h1, h2, h3, h4 {
+  color: #041733;
+}
 @keyframes flickerAnimation {
   0%   { opacity:1; }
   50%  { opacity:0; }
@@ -172,13 +167,10 @@ font-style: normal;
   100% { opacity:1; }
 }
 .flicker {
-   -webkit-animation: flickerAnimation 2s infinite;
-   -moz-animation: flickerAnimation 2s infinite;
-   -o-animation: flickerAnimation 2s infinite;
-    animation: flickerAnimation 2s infinite;
-}
-
-#app {
+  -webkit-animation: flickerAnimation 2s infinite;
+  -moz-animation: flickerAnimation 2s infinite;
+  -o-animation: flickerAnimation 2s infinite;
+  animation: flickerAnimation 2s infinite;
 }
 div#preloader {
   position: fixed;

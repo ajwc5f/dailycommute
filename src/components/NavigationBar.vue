@@ -1,6 +1,6 @@
 <template>
   <div class="navigationbar">
-    <nav class="navbar sticky-top navbar-toggleable-md navbar-inverse bg-inverse">
+    <nav class="navbar sticky-top navbar-toggleable-md navbar-inverse navbar-custom">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -9,7 +9,7 @@
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-md-0">
           <li class="nav-item">
-            <a class="nav-link" href="#">My Pocket</a>
+            <router-link to="/saved" class="nav-link" >Saved Articles</router-link>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Trending</a>
@@ -42,16 +42,33 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 
+/* change the background color */
+.navbar-custom {
+    background-color: #041733;
+}
 .navbar-brand {
   font-family: "Merriweather";
   font-weight: 900;
   font-style: normal;
 }
-
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: #fff;
+}
 .nav-link {
-font-family: "Kadwa";
-font-weight: normal;
-font-style: normal;
+  font-family: "Kadwa";
+  font-weight: normal;
+  font-style: normal;
+}
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+    color: #fff;
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #1dadda;
 }
 
 </style>
