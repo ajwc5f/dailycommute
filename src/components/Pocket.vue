@@ -5,17 +5,13 @@
       <h4 class="center">Here are the articles you have added to your pocket.</h4>
     </div>
     <!--Saved Articles list-->
-    <div v-if="savedArticles">
-      <ul class="list-unstyled">
-        <li v-for="article in savedArticles">
-          <!--If article has been deleted in an articlemedia component, then refresh articles-->
-          <ArticleMedia v-bind:article="article" v-bind:inpocket="true" v-on:savedArticlesChanged="refreshSavedArticles"></ArticleMedia>
-        </li>
-      </ul>
-    </div>
-    <div v-else>
-      <p class="lead">You currently have no articles in your pocket.</p>
-    </div>
+    <h3>You have <span class="articles-cnt">{{savedArticles.length}}</span> articles in your pocket.</h3>
+    <ul class="list-unstyled">
+      <li v-for="article in savedArticles">
+        <!--If article has been deleted in an articlemedia component, then refresh articles-->
+        <ArticleMedia v-bind:article="article" v-bind:inpocket="true" v-on:savedArticlesChanged="refreshSavedArticles"></ArticleMedia>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -47,6 +43,10 @@ export default {
             baseURL: 'https://mercury.postlight.com',
             headers: {'Content-Type': 'application/json', 'x-api-key': 'hBYuD6O5r55D770EVSlmy2dgHH4pH4CYfZAmvGJz'}
           });
+          //if no articles in pocket
+          if (response.data.list.length === 0){
+            return;
+          }
           for(var key in response.data.list) {
             console.log(key);
             instance.get('/parser?url=' + response.data.list[key].given_url)
@@ -75,5 +75,7 @@ export default {
 </script>
 
 <style>
-
+.articles-cnt {
+  color: #F0AD4E;
+}
 </style>
