@@ -1,24 +1,32 @@
 <template>
   <div class="navigationbar">
     <nav class="navbar sticky-top navbar-toggleable-md navbar-inverse navbar-custom">
+      <!--Collapse button for mobile-->
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="#">DailyCommute</a>
+      <!--Brand-->
+      <a class="navbar-brand logo" href="#">DailyCommute</a>
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+          <!--Daily Minute-->
           <li class="nav-item">
-            <router-link to="/saved" class="nav-link" >Saved Articles</router-link>
+            <router-link to="/dailyminute" class="nav-link" >Daily Minute</router-link>
           </li>
+          <!--Pocket-->
           <li class="nav-item">
-            <a class="nav-link" href="#">Trending</a>
+            <router-link to="/pocket" class="nav-link" >Pocket</router-link>
+          </li>
+          <!--About-->
+          <li class="nav-item">
+            <router-link to="/about" class="nav-link" >About</router-link>
+          </li>
+          <!--Contact-->
+          <li class="nav-item">
+            <router-link to="/contact" class="nav-link" >Contact</router-link>
           </li>
         </ul>
-        <!--<form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search">
-          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-        </form>-->
       </div>
     </nav>
   </div>
@@ -31,44 +39,34 @@ export default {
     return {
       text: ''
     }
-  },
-  methods: {
-  },
-  created: function () {
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-
-/* change the background color */
 .navbar-custom {
     background-color: #041733;
+    background-color: #000;
 }
 .navbar-brand {
   font-family: "Merriweather";
   font-weight: 900;
   font-style: normal;
 }
-/* change the brand and text color */
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-text {
     color: #fff;
 }
 .nav-link {
-  font-family: "Kadwa";
-  font-weight: normal;
+  font-family: "Merriweather Sans";
+  font-weight: 300;
   font-style: normal;
 }
-/* change the link color */
 .navbar-custom .navbar-nav .nav-link {
     color: #fff;
 }
-/* change the color of active or hovered links */
 .navbar-custom .nav-item.active .nav-link,
 .navbar-custom .nav-item:hover .nav-link {
-    color: #1dadda;
+    color: #F0AD4E;
 }
-
 </style>

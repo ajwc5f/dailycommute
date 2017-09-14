@@ -1,8 +1,9 @@
 <template>
+  <!--Main Page of DailyCommute-->
   <div class="home">
     <DurationSelection v-on:durationChanged="durationChanged"></DurationSelection>
     <div v-if="duration">
-      <Newslist v-bind:duration="duration" v-bind:articles="articles"></Newslist>
+      <Newslist v-bind:duration="duration" v-bind:articles="articles" v-bind:header="true"></Newslist>
     </div>
   </div>
 </template>
@@ -25,15 +26,13 @@ export default {
     }
   },
   methods: {
+    //Update the duration globally if duration changed event has been emitted
     durationChanged: function (duration) {
       this.duration = duration;
-    },
-  },
-  created: function () {
+    }
   }
 }
 </script>
-
 
 <style>
 

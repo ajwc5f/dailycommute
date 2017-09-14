@@ -4,26 +4,40 @@ import Vue from 'vue'
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import App from './App'
-import Saved from './components/SavedArticles'
 import Home from './components/Home'
+import DailyMinute from './components/DailyMinute'
+import Pocket from './components/Pocket'
+import About from './components/About'
+import Contact from './components/Contact'
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
 
+//set up all of our routes
 const routes = [
   { name: 'home',
     path: '/',
     component: Home },
-  { name: 'saved',
-    path: '/saved',
-    component: Saved }
+  { name: 'dailyminute',
+    path: '/dailyminute',
+    component: DailyMinute },
+  { name: 'pocket',
+    path: '/pocket',
+    component: Pocket },
+  { name: 'about',
+    path: '/about',
+    component: About },
+  { name: 'contact',
+    path: '/contact',
+    component: Contact }
 ]
 
 const router = new VueRouter ({
   routes
 })
 
-/* eslint-disable no-new */
+//setup the vue object, specifying we want vue to exist in element vue, using out router,
+//the app template, and the app component as our main entry.
 new Vue({
   el: '#app',
   router,
