@@ -6,7 +6,7 @@ Demo: https://thedailycommute.herokuapp.com/
 
 ## Todo
 - Improve UI design and functionality
-- Integrate Pocket API to add save for later functionality
+- Fully Integrate Pocket API to add save for later functionality
 - Pagination of articles list
 - Category and source selection
 
@@ -21,12 +21,19 @@ Demo: https://thedailycommute.herokuapp.com/
   - Heroku
   
 ## Usage
-Just download the repo, and run one of the commands below inside the root directory.
+Just download the repo, run the commands below inside the root directory.
 
 ``` bash
-# Serve at localhost:8080 in development mode.
+# To install all dependencies.
+npm install
+
+# Then, serve at localhost:8080 in development mode.
 npm run dev
 
-# Build with HTML/CSS/JS minification.
+# or
+
+npm run start
+
+# Or, build with HTML/CSS/JS minification using Webpack.
 npm run build
 ```
